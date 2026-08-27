@@ -1,0 +1,80 @@
+{
+  "id": "training-course-flat-educational",
+  "purpose": "培训课件",
+  "industry": "教育",
+  "style": "扁平简约",
+  "expression": "教学图解型",
+  "audience": "学员",
+  "scenario": "教学",
+  "density": "dense",
+  "palette": {
+    "roles": {
+      "background": { "value": "#f9fafb", "usage": "浅灰页面背景" },
+      "surface": { "value": "#ffffff", "usage": "卡片/容器底色" },
+      "primary": { "value": "#4f46e5", "usage": "靛蓝主色,章节标题" },
+      "accent": { "value": "#10b981", "usage": "绿色强调,正确/已完成" },
+      "textStrong": { "value": "#111827", "usage": "标题文字" },
+      "textBody": { "value": "#374151", "usage": "正文文字" },
+      "textMuted": { "value": "#9ca3af", "usage": "辅助/提示" },
+      "border": { "value": "#e5e7eb", "usage": "描边/分割线" }
+    }
+  },
+  "typography": {
+    "roles": {
+      "title": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [32, 44],
+        "weight": 700,
+        "lineHeight": 1.2
+      },
+      "subtitle": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [20, 26],
+        "weight": 600,
+        "lineHeight": 1.3
+      },
+      "body": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [16, 20],
+        "weight": 400,
+        "lineHeight": 1.6
+      },
+      "data": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [20, 32],
+        "weight": 700,
+        "lineHeight": 1.2
+      },
+      "caption": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [13, 15],
+        "weight": 400,
+        "lineHeight": 1.4
+      }
+    }
+  },
+  "shape": {
+    "cornerRadius": { "card": 8, "button": 8, "image": 8, "chip": 999 },
+    "shadow": "",
+    "borderWidth": 1
+  },
+  "pageRoleSlots": {
+    "cover": { "layout": "cover-hero", "slots": ["eyebrow", "headline", "subhead", "footer"] },
+    "section": { "layout": "section-divider", "slots": ["index", "title", "lead"] },
+    "concept": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"], "density": "dense" },
+    "example": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"], "density": "balanced" },
+    "exercise": { "layout": "diagram-full", "slots": ["title", "lead", "diagram", "caption"], "density": "balanced" },
+    "summary": { "layout": "closing-summary", "slots": ["headline", "takeaways", "contact"] }
+  },
+  "chart": {
+    "palette": ["#4f46e5", "#10b981", "#f59e0b", "#ef4444", "#0ea5e9", "#a78bfa"],
+    "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+    "gridColor": "#e5e7eb",
+    "axisColor": "#9ca3af"
+  },
+  "image": {
+    "language": "flat-illustration",
+    "treatment": "no-overlay",
+    "cropStyle": "contain"
+  }
+}

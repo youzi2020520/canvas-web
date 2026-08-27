@@ -1,0 +1,24 @@
+{
+  "id": "radar-metrics",
+  "family": "matrix",
+  "label": "能力雷达图",
+  "purpose": "多维度能力评估,以同心多边形对比实体在各项指标上的表现",
+  "layout": "radar-axes",
+  "slots": [
+    { "id": "axis-1", "label": "维度一", "region": "axis-top", "role": "axis" },
+    { "id": "axis-2", "label": "维度二", "region": "axis-top-right", "role": "axis" },
+    { "id": "axis-3", "label": "维度三", "region": "axis-bottom-right", "role": "axis" },
+    { "id": "axis-4", "label": "维度四", "region": "axis-bottom-left", "role": "axis" },
+    { "id": "axis-5", "label": "维度五", "region": "axis-top-left", "role": "axis" },
+    { "id": "series-self", "label": "本方 Our", "region": "overlay", "role": "series" },
+    { "id": "series-rival", "label": "竞品 Rival", "region": "overlay", "role": "series" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true,
+    "arrowheads": false,
+    "connectorStyle": "straight"
+  },
+  "accessibilityPattern": "从正上方维度起,顺时针逐轴读出各实体的得分,以综合结论收尾"
+}

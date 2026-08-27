@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slide Chart Designer"
+  short_description: "Create accurate presentation charts with ECharts"
+  default_prompt: "Use -slide-chart to design an accurate presentation chart."

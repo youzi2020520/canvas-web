@@ -1,0 +1,21 @@
+{
+  "id": "cycle-loop",
+  "family": "cycle",
+  "label": "循环闭环",
+  "purpose": "PDCA/飞轮等持续改进闭环,阶段首尾相接形成循环",
+  "layout": "circular-cycle",
+  "slots": [
+    { "id": "phase-plan", "label": "计划 Plan", "region": "top", "role": "phase" },
+    { "id": "phase-do", "label": "执行 Do", "region": "right", "role": "phase" },
+    { "id": "phase-check", "label": "检查 Check", "region": "bottom", "role": "phase" },
+    { "id": "phase-act", "label": "改进 Act", "region": "left", "role": "phase" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": false,
+    "regionLabels": true,
+    "arrowheads": true,
+    "connectorStyle": "curved"
+  },
+  "accessibilityPattern": "从顶部计划起,顺时针读执行→检查→改进,并说明其回到计划形成闭环"
+}

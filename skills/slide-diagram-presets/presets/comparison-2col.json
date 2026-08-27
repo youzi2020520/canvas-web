@@ -1,0 +1,17 @@
+{
+  "id": "comparison-2col",
+  "family": "matrix",
+  "label": "双列对比",
+  "purpose": "两个对象的横向对比,逐项对照差异",
+  "layout": "2col-comparison",
+  "slots": [
+    { "id": "left", "label": "对象 A", "region": "left", "role": "column" },
+    { "id": "right", "label": "对象 B", "region": "right", "role": "column" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true
+  },
+  "accessibilityPattern": "从左列对象 A 开始,逐项横向对比,以差异结论收尾"
+}

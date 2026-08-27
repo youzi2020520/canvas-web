@@ -1,0 +1,21 @@
+{
+  "id": "org-tree",
+  "family": "hierarchy",
+  "label": "组织架构",
+  "purpose": "层级关系,展示汇报结构与团队组成",
+  "layout": "tree-hierarchy",
+  "slots": [
+    { "id": "root", "label": "顶层(CEO/负责人)", "region": "top", "role": "node" },
+    { "id": "branch-1", "label": "分支一负责人", "region": "middle-left", "role": "node" },
+    { "id": "branch-2", "label": "分支二负责人", "region": "middle-center", "role": "node" },
+    { "id": "branch-3", "label": "分支三负责人", "region": "middle-right", "role": "node" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": false,
+    "regionLabels": true,
+    "arrowheads": false,
+    "connectorStyle": "elbow"
+  },
+  "accessibilityPattern": "从顶层根节点开始,逐层向下展开分支,以末端叶子节点收尾"
+}

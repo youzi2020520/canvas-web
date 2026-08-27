@@ -1,0 +1,23 @@
+{
+  "id": "value-chain",
+  "family": "flow",
+  "label": "价值链",
+  "purpose": "波特价值链,主活动(横向序列)与支持活动(横向贯穿)分解企业创造价值的环节",
+  "layout": "value-chain",
+  "slots": [
+    { "id": "support", "label": "支持活动 Support", "region": "top-band", "role": "support-activity" },
+    { "id": "primary-inbound", "label": "内向物流 Inbound", "region": "bottom-1", "role": "primary-activity" },
+    { "id": "primary-operations", "label": "运营 Operations", "region": "bottom-2", "role": "primary-activity" },
+    { "id": "primary-outbound", "label": "外向物流 Outbound", "region": "bottom-3", "role": "primary-activity" },
+    { "id": "primary-marketing", "label": "营销销售 Marketing", "region": "bottom-4", "role": "primary-activity" },
+    { "id": "primary-service", "label": "服务 Service", "region": "bottom-5", "role": "primary-activity" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true,
+    "arrowheads": true,
+    "connectorStyle": "straight"
+  },
+  "accessibilityPattern": "先读上方支持活动横带,再从左到右依次读五个主活动,以价值产出与利润收尾"
+}

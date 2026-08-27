@@ -1,0 +1,11 @@
+# Optional: make Codex use the same cloud MCP endpoint as ChatGPT.
+# Keep .codex/config.toml unchanged if you want the richer local filesystem/thread integration.
+
+[mcp_servers.codex-canvas-cloud]
+url = "https://canvas.websyc.tech/mcp"
+startup_timeout_sec = 20
+tool_timeout_sec = 180
+default_tools_approval_mode = "writes"
+
+# If CODEX_CANVAS_MCP_TOKEN is enabled on the server:
+# bearer_token_env_var = "CODEX_CANVAS_MCP_TOKEN"

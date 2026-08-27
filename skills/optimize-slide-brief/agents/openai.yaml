@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slide Brief Optimizer"
+  short_description: "Turn a rough idea into a confirmed presentation brief"
+  default_prompt: "Use $optimize-slide-brief to turn my rough presentation idea into a clear brief."

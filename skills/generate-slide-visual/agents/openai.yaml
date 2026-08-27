@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slide Visual Generator"
+  short_description: "Generate art-directed bitmap visuals for slides"
+  default_prompt: "Use -slide-visual to create an art-directed slide visual."

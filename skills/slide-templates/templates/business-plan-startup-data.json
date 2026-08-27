@@ -1,0 +1,82 @@
+{
+  "id": "business-plan-startup-data",
+  "purpose": "商业计划书",
+  "industry": "早期项目",
+  "style": "专业商务",
+  "expression": "数据驱动型",
+  "audience": "投资人",
+  "scenario": "路演",
+  "density": "balanced",
+  "palette": {
+    "roles": {
+      "background": { "value": "#ffffff", "usage": "页面背景" },
+      "surface": { "value": "#f1f5f9", "usage": "卡片/容器底色" },
+      "primary": { "value": "#0f3460", "usage": "深蓝主色,品牌标题" },
+      "accent": { "value": "#f97316", "usage": "橙色强调,机会/增长高亮" },
+      "textStrong": { "value": "#0f172a", "usage": "标题文字" },
+      "textBody": { "value": "#334155", "usage": "正文文字" },
+      "textMuted": { "value": "#94a3b8", "usage": "辅助/数据来源" },
+      "border": { "value": "#e2e8f0", "usage": "描边/分割线" }
+    }
+  },
+  "typography": {
+    "roles": {
+      "title": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [36, 52],
+        "weight": 700,
+        "lineHeight": 1.15
+      },
+      "subtitle": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [22, 28],
+        "weight": 600,
+        "lineHeight": 1.25
+      },
+      "body": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [16, 20],
+        "weight": 400,
+        "lineHeight": 1.55
+      },
+      "data": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [32, 56],
+        "weight": 700,
+        "lineHeight": 1.15
+      },
+      "caption": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [12, 14],
+        "weight": 400,
+        "lineHeight": 1.4
+      }
+    }
+  },
+  "shape": {
+    "cornerRadius": { "card": 16, "button": 10, "image": 12, "chip": 999 },
+    "shadow": "0 6px 20px rgba(15,52,96,0.10)",
+    "borderWidth": 1
+  },
+  "pageRoleSlots": {
+    "cover": { "layout": "cover-hero", "slots": ["eyebrow", "headline", "subhead", "footer"] },
+    "problem": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"] },
+    "solution": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"] },
+    "market": { "layout": "data-chart", "slots": ["title", "kpi", "chart", "source"] },
+    "traction": { "layout": "data-chart", "slots": ["title", "kpi", "chart", "source"] },
+    "team": { "layout": "team-grid", "slots": ["title", "members"] },
+    "ask": { "layout": "closing-summary", "slots": ["headline", "takeaways", "contact"] },
+    "closing": { "layout": "closing-summary", "slots": ["headline", "takeaways", "contact"] }
+  },
+  "chart": {
+    "palette": ["#0f3460", "#f97316", "#10b981", "#0ea5e9", "#8b5cf6", "#ef4444"],
+    "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+    "gridColor": "#e2e8f0",
+    "axisColor": "#94a3b8"
+  },
+  "image": {
+    "language": "product-screenshot-clean",
+    "treatment": "subtle-overlay",
+    "cropStyle": "subject-focal"
+  }
+}

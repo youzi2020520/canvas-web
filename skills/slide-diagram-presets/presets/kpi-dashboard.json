@@ -1,0 +1,23 @@
+{
+  "id": "kpi-dashboard",
+  "family": "matrix",
+  "label": "KPI 仪表盘",
+  "purpose": "关键指标看板,多卡片网格展示数值与趋势,辅以总览与来源",
+  "layout": "kpi-grid",
+  "slots": [
+    { "id": "kpi-1", "label": "指标一 KPI", "region": "card-1", "role": "kpi" },
+    { "id": "kpi-2", "label": "指标二 KPI", "region": "card-2", "role": "kpi" },
+    { "id": "kpi-3", "label": "指标三 KPI", "region": "card-3", "role": "kpi" },
+    { "id": "kpi-4", "label": "指标四 KPI", "region": "card-4", "role": "kpi" },
+    { "id": "trend", "label": "趋势图 Trend", "region": "card-wide", "role": "chart" },
+    { "id": "source", "label": "数据来源 Source", "region": "footer", "role": "source" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 1.5,
+    "dividerLines": true,
+    "regionLabels": true,
+    "arrowheads": false,
+    "connectorStyle": "straight"
+  },
+  "accessibilityPattern": "先逐个读 KPI 卡片(数值+同比),再读趋势图方向,以数据来源与结论收尾"
+}

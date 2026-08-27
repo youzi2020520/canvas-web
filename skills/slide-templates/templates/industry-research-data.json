@@ -1,0 +1,81 @@
+{
+  "id": "industry-research-data",
+  "purpose": "行业研究",
+  "industry": "科技",
+  "style": "专业商务",
+  "expression": "数据驱动型",
+  "audience": "投资人",
+  "scenario": "现场汇报",
+  "density": "dense",
+  "palette": {
+    "roles": {
+      "background": { "value": "#ffffff", "usage": "页面背景" },
+      "surface": { "value": "#f8fafc", "usage": "卡片/容器底色" },
+      "primary": { "value": "#1e3a8a", "usage": "主色,标题/关键数据" },
+      "accent": { "value": "#f59e0b", "usage": "强调色,趋势高亮/洞察" },
+      "textStrong": { "value": "#0f172a", "usage": "标题文字" },
+      "textBody": { "value": "#475569", "usage": "正文文字" },
+      "textMuted": { "value": "#94a3b8", "usage": "来源标注/辅助" },
+      "border": { "value": "#e2e8f0", "usage": "描边/分割线" }
+    }
+  },
+  "typography": {
+    "roles": {
+      "title": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [40, 56],
+        "weight": 700,
+        "lineHeight": 1.15
+      },
+      "subtitle": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [22, 28],
+        "weight": 600,
+        "lineHeight": 1.25
+      },
+      "body": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [15, 19],
+        "weight": 400,
+        "lineHeight": 1.55
+      },
+      "data": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [30, 52],
+        "weight": 700,
+        "lineHeight": 1.2
+      },
+      "caption": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [12, 14],
+        "weight": 400,
+        "lineHeight": 1.4
+      }
+    }
+  },
+  "shape": {
+    "cornerRadius": { "card": 10, "button": 8, "image": 0, "chip": 999 },
+    "shadow": "0 4px 12px rgba(15,23,42,0.08)",
+    "borderWidth": 1
+  },
+  "pageRoleSlots": {
+    "cover": { "layout": "cover-hero", "slots": ["eyebrow", "headline", "subhead", "footer"] },
+    "agenda": { "layout": "agenda-grid", "slots": ["title", "items"], "density": "dense" },
+    "section": { "layout": "section-divider", "slots": ["index", "title", "lead"] },
+    "content": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"], "density": "dense" },
+    "data": { "layout": "data-chart", "slots": ["title", "kpi", "chart", "source"], "density": "dense" },
+    "comparison": { "layout": "comparison-2col", "slots": ["title", "leftCard", "rightCard"] },
+    "closing": { "layout": "closing-summary", "slots": ["headline", "takeaways", "contact"] }
+  },
+  "chart": {
+    "palette": ["#1e3a8a", "#f59e0b", "#0ea5e9", "#10b981", "#ef4444", "#8b5cf6"],
+    "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+    "gridColor": "#e2e8f0",
+    "axisColor": "#94a3b8"
+  },
+  "image": {
+    "language": "editorial-photo",
+    "treatment": "subtle-overlay",
+    "cropStyle": "subject-focal"
+  }
+}

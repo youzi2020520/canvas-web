@@ -1,0 +1,21 @@
+{
+  "id": "timeline-roadmap",
+  "family": "timeline",
+  "label": "流程时间轴",
+  "purpose": "有序步骤或时间节点的路线图",
+  "layout": "horizontal-timeline",
+  "slots": [
+    { "id": "mile-1", "label": "节点一(起点)", "region": "left", "role": "milestone" },
+    { "id": "mile-2", "label": "节点二", "region": "center-left", "role": "milestone" },
+    { "id": "mile-3", "label": "节点三", "region": "center-right", "role": "milestone" },
+    { "id": "mile-4", "label": "节点四(终点)", "region": "right", "role": "milestone" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": false,
+    "regionLabels": true,
+    "arrowheads": true,
+    "connectorStyle": "straight"
+  },
+  "accessibilityPattern": "从左端起点开始,沿时间轴向右,以终点目标收尾"
+}

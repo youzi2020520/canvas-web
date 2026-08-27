@@ -1,0 +1,22 @@
+{
+  "id": "fishbone-causal",
+  "family": "causal-chain",
+  "label": "鱼骨图",
+  "purpose": "根因分析,问题置于鱼头,原因按分支归类溯源",
+  "layout": "fishbone",
+  "slots": [
+    { "id": "effect", "label": "问题 Effect", "region": "head", "role": "effect" },
+    { "id": "branch-people", "label": "人 People", "region": "top-branch-1", "role": "cause" },
+    { "id": "branch-process", "label": "流程 Process", "region": "top-branch-2", "role": "cause" },
+    { "id": "branch-tech", "label": "技术 Technology", "region": "bottom-branch-1", "role": "cause" },
+    { "id": "branch-env", "label": "环境 Environment", "region": "bottom-branch-2", "role": "cause" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": false,
+    "regionLabels": true,
+    "arrowheads": true,
+    "connectorStyle": "straight"
+  },
+  "accessibilityPattern": "先读鱼头问题,再依次读上分支(人→流程)与下分支(技术→环境)的原因,以主因结论收尾"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@codex-canvas/web-mcp",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "zod": "^3.25.76"
+  }
+}

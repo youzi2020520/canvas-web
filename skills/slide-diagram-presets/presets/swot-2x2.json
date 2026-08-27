@@ -1,0 +1,19 @@
+{
+  "id": "swot-2x2",
+  "family": "matrix",
+  "label": "SWOT 分析",
+  "purpose": "战略分析,四象限评估优势/劣势/机会/威胁",
+  "layout": "2x2-grid",
+  "slots": [
+    { "id": "tl", "label": "优势 Strengths", "region": "top-left", "role": "quadrant" },
+    { "id": "tr", "label": "劣势 Weaknesses", "region": "top-right", "role": "quadrant" },
+    { "id": "bl", "label": "机会 Opportunities", "region": "bottom-left", "role": "quadrant" },
+    { "id": "br", "label": "威胁 Threats", "region": "bottom-right", "role": "quadrant" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true
+  },
+  "accessibilityPattern": "从左上优势开始,先上行(优势→劣势),再下行(机会→威胁),以战略结论收尾"
+}

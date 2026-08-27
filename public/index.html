@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codex-Canvas</title>
+    <link rel="icon" href="/icon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles.css?v=90" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <main class="canvas-pane">
+        <section class="board-shell" aria-label="Canvas workspace">
+          <header class="project-header">
+            <span class="project-mark"></span>
+            <input id="projectTitle" class="project-title-input" value="Untitled" aria-label="Project title" spellcheck="false" />
+            <button title="Project options" aria-label="Project options">
+              <svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+          </header>
+          <div id="projectMenu" class="project-menu" hidden></div>
+
+          <button id="settingsButton" class="settings-button" title="Settings" aria-label="Settings">
+            <svg class="settings-gear" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 15.25a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5z"></path>
+              <path d="M19.4 13.5a7.9 7.9 0 0 0 .05-1.5 7.9 7.9 0 0 0-.05-1.5l2.02-1.54-1.9-3.28-2.37.98a8.45 8.45 0 0 0-2.58-1.5L14.25 2h-4.5l-.32 3.16a8.45 8.45 0 0 0-2.58 1.5l-2.37-.98-1.9 3.28L4.6 10.5a7.9 7.9 0 0 0-.05 1.5 7.9 7.9 0 0 0 .05 1.5l-2.02 1.54 1.9 3.28 2.37-.98a8.45 8.45 0 0 0 2.58 1.5l.32 3.16h4.5l.32-3.16a8.45 8.45 0 0 0 2.58-1.5l2.37.98 1.9-3.28-2.02-1.54z"></path>
+            </svg>
+          </button>
+          <div id="settingsMenu" class="settings-menu" hidden>
+            <div class="settings-menu-section">
+              <button class="settings-menu-row settings-menu-parent" data-settings-row="language">
+                <svg class="settings-row-icon settings-row-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 6.371c0 4.418 -2.239 6.629 -5 6.629"></path>
+                  <path d="M4 6.371h7"></path>
+                  <path d="M5 9c0 2.144 2.252 3.908 6 4"></path>
+                  <path d="M12 20l4 -9l4 9"></path>
+                  <path d="M19.1 18h-6.2"></path>
+                  <path d="M6.694 3l.793 .582"></path>
+                </svg>
+                <span data-i18n="language">Language</span>
+                <span class="settings-row-value" data-language-current>English</span>
+                <svg class="settings-menu-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 6l6 6l-6 6"></path>
+                </svg>
+              </button>
+              <button id="appUpdateButton" class="settings-menu-row settings-version-row" type="button">
+                <svg class="settings-row-icon settings-row-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 7h-9"></path>
+                  <path d="M14 17H5"></path>
+                  <circle cx="17" cy="17" r="3"></circle>
+                  <circle cx="7" cy="7" r="3"></circle>
+                </svg>
+                <span data-i18n="appVersion">Version</span>
+                <span class="settings-version-value">
+                  <span id="appVersionValue">...</span>
+                  <span id="appUpdateStatus"></span>
+                </span>
+              </button>
+              <div id="appRuntimeDetails" class="settings-runtime-details" hidden>
+                <span id="appRuntimeDiagnostics"></span>
+                <span id="appRuntimeSource"></span>
+              </div>
+            </div>
+            <div class="settings-submenu" data-settings-submenu="language">
+              <button data-language="en">
+                <span>English</span>
+                <span class="settings-check" aria-hidden="true"></span>
+              </button>
+              <button data-language="zh">
+                <span>简体中文</span>
+                <span class="settings-check" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <div id="runtimeMismatchBanner" class="runtime-mismatch-banner" role="alert" hidden></div>
+          <div id="board" class="board" tabindex="0" aria-label="Codex canvas">
+            <canvas id="boardGrid" class="board-grid" aria-hidden="true"></canvas>
+            <div id="emptyState" class="empty-state">
+            </div>
+            <div id="world" class="world">
+              <div id="objects" class="objects"></div>
+              <div id="workflowLayer" class="workflow-layer" hidden>
+                <svg id="workflowEdges" class="workflow-edges" aria-hidden="true"></svg>
+                <div id="workflowNodes" class="workflow-nodes"></div>
+              </div>
+            </div>
+            <aside id="workflowPalette" class="workflow-palette" hidden aria-label="Image workflow tools">
+              <div class="workflow-palette-header">
+                <div>
+                  <strong data-workflow-copy="title">AI Workflow</strong>
+                  <span data-workflow-copy="subtitle">Prompt · Image · Generate</span>
+                </div>
+                <button id="workflowClose" type="button" title="Close workflow" aria-label="Close workflow">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="workflow-palette-actions">
+                <button type="button" data-workflow-add="prompt">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 5h16"></path>
+                    <path d="M4 12h12"></path>
+                    <path d="M4 19h8"></path>
+                  </svg>
+                  <span data-workflow-copy="addPrompt">Prompt</span>
+                </button>
+                <button type="button" data-workflow-add="image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <circle cx="9" cy="9" r="2"></circle>
+                    <path d="m21 15-5-5L5 21"></path>
+                  </svg>
+                  <span data-workflow-copy="addImage">Selected image</span>
+                </button>
+                <button type="button" data-workflow-add="generator">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m12 3-1.9 5.1L5 10l5.1 1.9L12 17l1.9-5.1L19 10l-5.1-1.9Z"></path>
+                    <path d="m5 3-.6 1.4L3 5l1.4.6L5 7l.6-1.4L7 5l-1.4-.6Z"></path>
+                    <path d="m19 17-.8 2.2L16 20l2.2.8L19 23l.8-2.2L22 20l-2.2-.8Z"></path>
+                  </svg>
+                  <span data-workflow-copy="addGenerator">Generate</span>
+                </button>
+              </div>
+              <p data-workflow-copy="help">Drag from an output dot to a matching input dot. Run a Generate node to create an image.</p>
+            </aside>
+            <div id="selectionToolbar" class="selection-toolbar" hidden>
+              <button data-action="edit-page" data-tooltip="Edit page" title="Edit page" aria-label="Edit page" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                </svg>
+                <span>Edit page</span>
+              </button>
+              <button data-action="quick-edit" data-tooltip="Quick Edit" title="Quick Edit" aria-label="Quick Edit">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" />
+                  <path d="m14 7 3 3" />
+                  <path d="M5 6v4" />
+                  <path d="M19 14v4" />
+                  <path d="M10 2v2" />
+                  <path d="M7 8H3" />
+                  <path d="M21 16h-4" />
+                  <path d="M11 3H9" />
+                </svg>
+                <span>Quick Edit</span>
+              </button>
+              <button data-action="remove-bg" data-tooltip="Remove BG" title="Remove BG" aria-label="Remove BG">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <line x1="2" x2="22" y1="2" y2="22" />
+                  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83" />
+                  <line x1="13.5" x2="6" y1="13.5" y2="21" />
+                  <line x1="18" x2="21" y1="12" y2="15" />
+                  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59" />
+                  <path d="M21 15V5a2 2 0 0 0-2-2H9" />
+                </svg>
+                <span>Remove BG</span>
+              </button>
+              <button data-action="expand" data-tooltip="Expand" title="Expand" aria-label="Expand">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15 3h6v6" />
+                  <path d="M9 21H3v-6" />
+                  <path d="M21 3l-7 7" />
+                  <path d="M3 21l7 -7" />
+                  <rect x="8" y="8" width="8" height="8" rx="1.5" />
+                </svg>
+                <span>Expand</span>
+              </button>
+              <button data-action="crop" data-tooltip="Crop" title="Crop" aria-label="Crop">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 2v14a2 2 0 0 0 2 2h14" />
+                  <path d="M18 22V8a2 2 0 0 0 -2 -2H2" />
+                </svg>
+                <span>Crop</span>
+              </button>
+              <button data-action="edit-elements" data-tooltip="Edit Elements" title="Edit Elements" aria-label="Edit Elements">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+                  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+                  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
+                </svg>
+                <span>Edit Elements</span>
+              </button>
+              <span class="toolbar-row-break" data-toolbar-group-break hidden aria-hidden="true"></span>
+              <button data-action="reset-layer-group" data-tooltip="Reset group" title="Reset group" aria-label="Reset group" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3.05 11a9 9 0 1 1 2.64 6.36" />
+                  <path d="M3 4v7h7" />
+                  <path d="M8 11a4 4 0 1 0 1.17-2.83" />
+                </svg>
+                <span>Reset group</span>
+              </button>
+              <button data-action="layer-down" data-tooltip="Layer down" title="Layer down" aria-label="Layer down" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14" />
+                  <path d="m18 13 -6 6 -6 -6" />
+                </svg>
+                <span>Layer down</span>
+              </button>
+              <button data-action="layer-up" data-tooltip="Layer up" title="Layer up" aria-label="Layer up" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 19V5" />
+                  <path d="m6 11 6 -6 6 6" />
+                </svg>
+                <span>Layer up</span>
+              </button>
+              <button data-action="group-layer-group" data-tooltip="Group" title="Group" aria-label="Group" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 7V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2" />
+                  <rect x="5" y="10" width="9" height="9" rx="2" />
+                  <path d="M5 14H3a2 2 0 0 1-2-2V8" />
+                  <path d="M14 19h2a2 2 0 0 0 2-2v-2" />
+                </svg>
+                <span>Group</span>
+              </button>
+              <button data-action="align-left" data-tooltip="Align left" title="Align left" aria-label="Align left" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16"/><path d="M8 7h9"/><path d="M8 12h12"/><path d="M8 17h7"/></svg>
+                <span>Align left</span>
+              </button>
+              <button data-action="align-center" data-tooltip="Align center" title="Align center" aria-label="Align center" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="M7 7h10"/><path d="M5 12h14"/><path d="M8 17h8"/></svg>
+                <span>Align center</span>
+              </button>
+              <button data-action="align-right" data-tooltip="Align right" title="Align right" aria-label="Align right" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4v16"/><path d="M7 7h9"/><path d="M4 12h12"/><path d="M9 17h7"/></svg>
+                <span>Align right</span>
+              </button>
+              <button data-action="align-top" data-tooltip="Align top" title="Align top" aria-label="Align top" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16"/><path d="M7 8v9"/><path d="M12 8v12"/><path d="M17 8v7"/></svg>
+                <span>Align top</span>
+              </button>
+              <button data-action="align-middle" data-tooltip="Align middle" title="Align middle" aria-label="Align middle" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18"/><path d="M7 7v10"/><path d="M12 5v14"/><path d="M17 8v8"/></svg>
+                <span>Align middle</span>
+              </button>
+              <button data-action="align-bottom" data-tooltip="Align bottom" title="Align bottom" aria-label="Align bottom" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M7 7v9"/><path d="M12 4v12"/><path d="M17 9v7"/></svg>
+                <span>Align bottom</span>
+              </button>
+              <button data-action="distribute-horizontal" data-tooltip="Distribute horizontally" title="Distribute horizontally" aria-label="Distribute horizontally" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16"/><path d="M20 4v16"/><rect x="8" y="7" width="3" height="10" rx="1"/><rect x="14" y="7" width="3" height="10" rx="1"/></svg>
+                <span>Distribute horizontally</span>
+              </button>
+              <button data-action="distribute-vertical" data-tooltip="Distribute vertically" title="Distribute vertically" aria-label="Distribute vertically" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16"/><path d="M4 20h16"/><rect x="7" y="8" width="10" height="3" rx="1"/><rect x="7" y="14" width="10" height="3" rx="1"/></svg>
+                <span>Distribute vertically</span>
+              </button>
+              <button data-action="tidy-grid" data-tooltip="Tidy grid" title="Tidy grid" aria-label="Tidy grid" hidden>
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span>Tidy grid</span>
+              </button>
+              <button data-action="edit-text" data-tooltip="Edit Text" title="Edit Text" aria-label="Edit Text">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 4v16" />
+                  <path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2" />
+                  <path d="M9 20h6" />
+                </svg>
+                <span>Edit Text</span>
+              </button>
+              <button data-action="reference-generate" data-tooltip="Generate with reference" title="Generate with reference" aria-label="Generate with reference">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m12 3-1.9 5.1L5 10l5.1 1.9L12 17l1.9-5.1L19 10l-5.1-1.9Z"></path>
+                  <path d="M4 18h6"></path>
+                  <path d="M7 15v6"></path>
+                </svg>
+                <span>Reference Generate</span>
+              </button>
+              <button class="icon-only" data-action="send-to-chat" data-tooltip="Send to chat" title="Send to chat" aria-label="Send to chat">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.536 21.686a.5.5 0 0 0 .937 -.024l6.5 -19a.496 .496 0 0 0 -.635 -.635l-19 6.5a.5 .5 0 0 0 -.024 .937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+                  <path d="m21.854 2.147 -10.94 10.939" />
+                </svg>
+              </button>
+              <button class="icon-only" data-action="copy-file-mention" data-tooltip="Copy @file" title="Copy @file" aria-label="Copy @file">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" />
+                </svg>
+              </button>
+              <button class="resolution-toggle" data-action="toggle-resolution" data-resolution="1x" data-tooltip="原图" title="原图" aria-label="原图" aria-pressed="false">
+                <svg class="res-icon" data-res-icon="1" viewBox="0 0 1024 1024" aria-hidden="true">
+                  <path d="M351.658667 767.872c0 7.168-1.962667 12.714667-5.845334 16.597333-3.882667 3.882667-9.386667 5.845333-16.64 5.845334h-12.117333c-7.210667 0-12.757333-1.962667-16.64-5.802667-3.882667-3.882667-5.845333-9.386667-5.845333-16.554667V242.474667H210.346667a21.205333 21.205333 0 0 1-15.701334-5.717334 21.418667 21.418667 0 0 1-5.717333-15.829333v-11.733333c0-6.741333 1.877333-12.032 5.717333-15.829334a21.376 21.376 0 0 1 15.786667-5.717333h108.074667c10.794667 0 19.029333 2.816 24.704 8.533333 5.674667 5.632 8.490667 13.866667 8.490666 24.661334v546.986666zM845.909333 762.581333c5.546667 7.338667 6.741333 13.738667 3.626667 19.114667-3.114667 5.418667-9.130667 8.106667-18.005333 8.106667h-15.445334a31.914667 31.914667 0 0 1-15.274666-3.498667 40.362667 40.362667 0 0 1-13.141334-12.928l-297.813333-386.944c-5.546667-7.338667-6.826667-13.738667-3.754667-19.114667 3.029333-5.418667 8.96-8.106667 17.92-8.106666h15.445334a32.426667 32.426667 0 0 1 15.573333 3.456 41.258667 41.258667 0 0 1 13.056 12.714666l297.813333 387.2z m-305.066666 10.794667a41.301333 41.301333 0 0 1-12.970667 12.928 31.658667 31.658667 0 0 1-15.445333 3.498667h-13.909334c-9.386667 0-15.786667-2.688-19.2-8.106667-3.413333-5.376-2.304-11.776 3.242667-19.114667l297.813333-387.2a40.32 40.32 0 0 1 13.269334-12.714666 32.682667 32.682667 0 0 1 15.36-3.456h13.909333c9.429333 0 15.786667 2.688 19.072 8.106666 3.285333 5.376 2.176 11.776-3.370667 19.114667l-297.813333 386.944z" />
+                </svg>
+                <svg class="res-icon" data-res-icon="2" viewBox="0 0 1024 1024" aria-hidden="true" hidden>
+                  <path d="M124.16 357.717333c-7.125333 0-12.586667-2.090667-16.384-6.314666-3.84-4.181333-4.778667-9.813333-2.858667-16.853334a163.285333 163.285333 0 0 1 32.512-77.525333c17.962667-23.893333 40.533333-42.88 67.626667-57.045333a182.826667 182.826667 0 0 1 85.802667-21.248c32.853333 0 63.189333 8.32 91.050666 24.874666a188.970667 188.970667 0 0 1 66.474667 66.261334c16.469333 27.562667 24.746667 56.618667 24.746667 87.210666 0 25.514667-5.717333 50.602667-17.066667 75.221334-11.349333 24.661333-29.44 51.626667-54.314667 80.938666l-240.256 255.36v-33.109333h302.378667c6.698667 0 11.946667 1.92 15.701333 5.717333 3.797333 3.84 5.674667 9.088 5.674667 15.829334v11.733333a21.418667 21.418667 0 0 1-5.717333 15.786667 21.418667 21.418667 0 0 1-15.829334 5.76h-334.506666a24.96 24.96 0 0 1-16.64-5.248 17.792 17.792 0 0 1-6.229334-14.378667v-9.813333a36.693333 36.693333 0 0 1 2.986667-14.762667 52.053333 52.053333 0 0 1 9.557333-14.08L357.973333 476.586667c21.418667-24.746667 36.437333-46.037333 45.056-63.872 8.661333-17.834667 12.970667-36.309333 12.970667-55.466667 0-22.784-5.376-43.648-16.213333-62.506667a119.168 119.168 0 0 0-44.8-44.757333 126.08 126.08 0 0 0-64-16.426667c-21.674667 0-41.941333 4.693333-60.842667 14.208a131.84 131.84 0 0 0-46.592 38.272 109.312 109.312 0 0 0-22.016 52.608 36.138667 36.138667 0 0 1-10.112 14.336 23.466667 23.466667 0 0 1-15.061333 4.736H124.16zM926.976 762.581333c5.546667 7.338667 6.741333 13.738667 3.626667 19.114667-3.114667 5.418667-9.130667 8.106667-18.005334 8.106667h-15.488a31.914667 31.914667 0 0 1-15.232-3.498667 40.362667 40.362667 0 0 1-13.141333-12.928l-297.813333-386.944c-5.546667-7.338667-6.826667-13.738667-3.754667-19.114667 2.986667-5.418667 8.96-8.106667 17.92-8.106666h15.445333a32.426667 32.426667 0 0 1 15.573334 3.456 41.258667 41.258667 0 0 1 13.056 12.714666l297.813333 387.2z m-305.066667 10.794667a41.301333 41.301333 0 0 1-12.970666 12.928 31.658667 31.658667 0 0 1-15.445334 3.498667h-13.909333c-9.386667 0-15.786667-2.688-19.2-8.106667-3.413333-5.376-2.304-11.776 3.242667-19.114667l297.813333-387.2a40.32 40.32 0 0 1 13.269333-12.714666 32.682667 32.682667 0 0 1 15.36-3.456h13.909334c9.429333 0 15.786667 2.688 19.072 8.106666 3.285333 5.376 2.176 11.776-3.370667 19.114667l-297.813333 386.944z" />
+                </svg>
+              </button>
+              <button class="icon-only" data-action="download" data-tooltip="Download" title="Download" aria-label="Download">
+                <svg class="context-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 15V3" />
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <path d="m7 10 5 5 5-5" />
+                </svg>
+              </button>
+            </div>
+            <div id="textToolbar" class="text-toolbar" data-text-toolbar hidden role="toolbar" aria-label="文字属性工具栏">
+              <div class="text-toolbar-section">
+                <div class="text-toolbar-dropdown-wrapper">
+                  <button class="text-toolbar-color-btn" data-action="text-color" data-tooltip="颜色" title="颜色" aria-label="颜色">
+                    <span class="text-color-dot" id="textColorDot"></span>
+                    <svg class="text-chevron" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="text-color-palette" hidden>
+                    <button type="button" class="text-color-swatch" data-color="#202124" style="background:#202124" aria-label="黑色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#d93025" style="background:#d93025" aria-label="红色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#f9ab00" style="background:#f9ab00" aria-label="橙色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#188038" style="background:#188038" aria-label="绿色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#1a73e8" style="background:#1a73e8" aria-label="蓝色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#9334e6" style="background:#9334e6" aria-label="紫色"></button>
+                    <button type="button" class="text-color-swatch" data-color="#ffffff" style="background:#ffffff;border:1px solid #e0e0e0" aria-label="白色"></button>
+                    <div class="text-color-custom-wrap">
+                      <input type="color" class="text-color-custom" id="textColorCustom" value="#202124" aria-label="自定义颜色">
+                      <svg t="1786088719532" class="icon text-color-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10034"><path d="M386.844444 339.740444a211.740444 211.740444 0 0 1 125.155556-40.96V0a509.155556 509.155556 0 0 0-300.657778 98.190222L386.844444 339.740444z" fill="#80FF00" p-id="10035"></path><path d="M637.155556 684.088889l175.502222 241.550222a511.886222 511.886222 0 0 0 186.140444-255.488l-284.842666-93.070222a212.650667 212.650667 0 0 1-76.8 107.008z" fill="#FE0000" p-id="10036"></path><path d="M713.955556 446.293333a194.958222 194.958222 0 0 1 0 131.242667l284.842666 93.070222a509.155556 509.155556 0 0 0 0-316.472889l-284.842666 92.16z" fill="#FE3F00" p-id="10037"></path><path d="M637.155556 684.088889a211.797333 211.797333 0 0 1-125.155556 41.472v298.268444a509.155556 509.155556 0 0 0 300.657778-98.190222L637.155556 684.088889z" fill="#FF00FE" p-id="10038"></path><path d="M713.955556 446.293333l284.842666-93.070222a511.886222 511.886222 0 0 0-186.140444-255.488L637.155556 339.740444a212.650667 212.650667 0 0 1 76.8 106.552889z" fill="#FE8000" p-id="10039"></path><path d="M386.844444 684.088889l-175.502222 241.550222A509.155556 509.155556 0 0 0 512 1023.829333v-298.780444a211.797333 211.797333 0 0 1-125.155556-40.96z" fill="#7F00FF" p-id="10040"></path><path d="M310.044444 577.536L25.201778 670.606222a511.943111 511.943111 0 0 0 186.140444 255.488L386.844444 684.088889a212.650667 212.650667 0 0 1-76.8-106.552889z" fill="#0000FE" p-id="10041"></path><path d="M310.044444 577.536a195.015111 195.015111 0 0 1 0-131.242667L25.201778 353.28a509.155556 509.155556 0 0 0 0 316.472889l284.842666-92.16z" fill="#01FFFF" p-id="10042"></path><path d="M637.155556 339.740444l175.502222-241.550222A509.155556 509.155556 0 0 0 512 0v298.780444c44.999111 0 88.860444 14.336 125.155556 40.96z" fill="#FFBE00" p-id="10043"></path><path d="M386.844444 339.740444L211.285333 98.190222A511.943111 511.943111 0 0 0 25.201778 353.678222L310.044444 446.748444A212.650667 212.650667 0 0 1 386.844444 339.740444z" fill="#00FF01" p-id="10044"></path></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-toolbar-dropdown-wrapper">
+                  <button class="text-toolbar-select" data-action="text-font-family" data-tooltip="字体" title="字体" aria-label="字体">
+                    <span class="text-select-label" id="textFontLabel">Aa</span>
+                    <svg class="text-chevron" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="text-dropdown-menu" data-dropdown="font-family" hidden>
+                    <button type="button" class="text-dropdown-item" data-font="Inter"><span class="font-name">简洁</span></button>
+                    <button type="button" class="text-dropdown-item" data-font="Georgia, serif"><span class="font-name">典雅</span></button>
+                    <button type="button" class="text-dropdown-item" data-font="'Nunito', sans-serif"><span class="font-name">柔和</span></button>
+                    <button type="button" class="text-dropdown-item" data-font="'JetBrains Mono', monospace"><span class="font-name">等宽</span></button>
+                    <button type="button" class="text-dropdown-item" data-font="'Caveat', cursive" style="font-family:'Caveat', cursive"><span class="font-name">手写</span></button>
+                    <button type="button" class="text-dropdown-item" data-font="'Permanent Marker', cursive" style="font-family:'Permanent Marker', cursive"><span class="font-name">马克笔</span></button>
+                  </div>
+                </div>
+                <div class="text-toolbar-dropdown-wrapper">
+                  <button class="text-toolbar-select text-toolbar-select-size" data-action="text-font-size" data-tooltip="字号" title="字号" aria-label="字号">
+                    <span class="text-select-label" id="textFontSizeLabel">28</span>
+                    <svg class="text-chevron" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="text-dropdown-menu" data-dropdown="font-size" hidden>
+                    <button type="button" class="text-dropdown-item" data-size="16"><span class="text-size-label">小</span><span class="text-size-value">16</span></button>
+                    <button type="button" class="text-dropdown-item" data-size="24"><span class="text-size-label">中</span><span class="text-size-value">24</span></button>
+                    <button type="button" class="text-dropdown-item" data-size="40"><span class="text-size-label">大</span><span class="text-size-value">40</span></button>
+                    <button type="button" class="text-dropdown-item" data-size="64"><span class="text-size-label">特大</span><span class="text-size-value">64</span></button>
+                    <button type="button" class="text-dropdown-item" data-size="96"><span class="text-size-label">超大</span><span class="text-size-value">96</span></button>
+                    <div class="text-size-custom-wrap">
+                      <input type="number" class="text-size-custom" id="textSizeCustom" min="6" max="160" placeholder="自定义" aria-label="自定义字号">
+                    </div>
+                  </div>
+                </div>
+                <div class="text-toolbar-dropdown-wrapper">
+                  <button class="text-toolbar-select" data-action="text-align" data-tooltip="对齐方式" title="对齐方式" aria-label="对齐方式">
+                    <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 6h18"/><path d="M3 12h14"/><path d="M3 18h10"/>
+                    </svg>
+                    <svg class="text-chevron" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                  <div class="text-dropdown-menu" data-dropdown="align" hidden>
+                    <button type="button" class="text-dropdown-item" data-align="left">
+                      <svg class="text-align-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16"/><path d="M8 7h9"/><path d="M8 12h12"/><path d="M8 17h7"/></svg>
+                      <span>左对齐</span>
+                    </button>
+                    <button type="button" class="text-dropdown-item" data-align="center">
+                      <svg class="text-align-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="M7 7h10"/><path d="M5 12h14"/><path d="M8 17h8"/></svg>
+                      <span>居中</span>
+                    </button>
+                    <button type="button" class="text-dropdown-item" data-align="right">
+                      <svg class="text-align-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4v16"/><path d="M7 7h9"/><path d="M4 12h12"/><path d="M9 17h7"/></svg>
+                      <span>右对齐</span>
+                    </button>
+                    <button type="button" class="text-dropdown-item" data-align="justify">
+                      <svg class="text-align-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16"/><path d="M4 9h16"/><path d="M4 14h16"/><path d="M4 19h16"/></svg>
+                      <span>两端对齐</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-toolbar-divider"></div>
+              <div class="text-toolbar-section">
+                <button class="text-toolbar-btn" data-action="text-bold" data-tooltip="加粗" title="加粗" aria-label="加粗" aria-pressed="false">
+                  <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 5h6a3.5 3.5 0 0 1 0 7H7z"/>
+                    <path d="M7 12h7a3.5 3.5 0 0 1 0 7H7z"/>
+                  </svg>
+                </button>
+                <button class="text-toolbar-btn" data-action="text-italic" data-tooltip="倾斜" title="倾斜" aria-label="倾斜" aria-pressed="false">
+                  <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="19" y1="4" x2="10" y2="4"/>
+                    <line x1="14" y1="20" x2="5" y2="20"/>
+                    <line x1="15" y1="4" x2="9" y2="20"/>
+                  </svg>
+                </button>
+                <button class="text-toolbar-btn" data-action="text-underline" data-tooltip="下划线" title="下划线" aria-label="下划线" aria-pressed="false">
+                  <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 3v7a6 6 0 0 0 12 0V3"/>
+                    <line x1="4" y1="21" x2="20" y2="21"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="text-toolbar-divider"></div>
+              <div class="text-toolbar-section">
+                <button class="text-toolbar-btn" data-action="text-lock" data-tooltip="锁定" title="锁定" aria-label="锁定">
+                  <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </button>
+                <button class="text-toolbar-btn text-toolbar-btn-danger" data-action="text-delete" data-tooltip="删除" title="删除" aria-label="删除">
+                  <svg class="text-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <form id="quickEditComposer" class="quick-edit-composer" hidden>
+              <div id="editTextPanel" class="edit-text-panel" hidden>
+                <div class="edit-text-title">Edit Text</div>
+                <div id="editTextList" class="edit-text-list"></div>
+                <div id="editTextStatus" class="edit-text-status"></div>
+              </div>
+              <div id="expandPanel" class="expand-panel" hidden>
+                <div class="expand-title" data-i18n="expandTitle">Expand</div>
+                <label class="expand-field">
+                  <span data-i18n="expandScale">Scale</span>
+                  <select id="expandScale" aria-label="Expand scale">
+                    <option value="1">1x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                  </select>
+                </label>
+                <label class="expand-field">
+                  <span data-i18n="expandPreset">Preset</span>
+                  <select id="expandPreset" aria-label="Expand preset">
+                    <option value="general" data-i18n="expandPresetGeneral">General</option>
+                    <option value="photo" data-i18n="expandPresetPhoto">Photo</option>
+                    <option value="poster" data-i18n="expandPresetPoster">Poster</option>
+                    <option value="product" data-i18n="expandPresetProduct">Product</option>
+                  </select>
+                </label>
+                <div id="expandRatios" class="expand-ratios" role="radiogroup" aria-label="Expand ratio">
+                  <button type="button" class="active" data-expand-ratio="original" role="radio" aria-checked="true" data-i18n="expandOriginalRatio">Original ratio</button>
+                  <button type="button" data-expand-ratio="1:1" role="radio" aria-checked="false">1:1</button>
+                  <button type="button" data-expand-ratio="3:4" role="radio" aria-checked="false">3:4</button>
+                  <button type="button" data-expand-ratio="2:3" role="radio" aria-checked="false">2:3</button>
+                  <button type="button" data-expand-ratio="9:16" role="radio" aria-checked="false">9:16</button>
+                  <button type="button" data-expand-ratio="4:3" role="radio" aria-checked="false">4:3</button>
+                  <button type="button" data-expand-ratio="3:2" role="radio" aria-checked="false">3:2</button>
+                  <button type="button" data-expand-ratio="16:9" role="radio" aria-checked="false">16:9</button>
+                  <button type="button" data-expand-ratio="4:5" role="radio" aria-checked="false">4:5</button>
+                  <button type="button" data-expand-ratio="5:4" role="radio" aria-checked="false">5:4</button>
+                </div>
+              </div>
+              <textarea id="quickEditPrompt" rows="2" autocomplete="off" spellcheck="true" data-i18n-placeholder="quickEditPlaceholder" placeholder="Describe your edit here"></textarea>
+              <div id="quickEditHint" class="quick-edit-hint" data-i18n="quickEditHint">
+                Drag between the image target and an outside note position. The arrow points to the image and the text stays at the tail.
+              </div>
+              <div id="quickEditMarkupControls" class="quick-edit-markup-controls" aria-label="Markup tools">
+                <div id="quickEditColorPalette" class="quick-edit-color-palette" aria-label="Markup colors"></div>
+                <div class="quick-edit-markup-tools">
+                  <!-- Lucide message-square-plus; kept inline to avoid a runtime icon dependency. -->
+                  <button type="button" title="Arrow note" aria-label="Arrow note" data-tooltip="Arrow note" data-quick-edit-tool="annotation">
+                    <svg class="quick-edit-tool-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h6"></path>
+                      <path d="M19 3v6"></path>
+                      <path d="M16 6h6"></path>
+                    </svg>
+                  </button>
+                  <button type="button" title="Pencil" aria-label="Pencil" data-tooltip="Pencil" data-quick-edit-tool="pencil">
+                    <svg class="quick-edit-tool-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                      <path d="M13.5 6.5l4 4"></path>
+                    </svg>
+                  </button>
+                  <button type="button" title="Text" aria-label="Text" data-tooltip="Text" data-quick-edit-tool="text">
+                    <svg class="quick-edit-tool-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 4l12 0"></path>
+                      <path d="M12 4l0 16"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="quick-edit-actions">
+                <button type="button" id="quickEditCancel" class="secondary-action" data-i18n="cancel">Cancel</button>
+                <button type="submit" id="quickEditRun" data-i18n="run">Run</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Canvas Map (Mini-view) — stacked above controls -->
+          <div id="canvasMap" class="canvas-map" aria-label="Canvas map">
+            <canvas id="canvasMapCanvas" class="canvas-map-canvas"></canvas>
+            <div id="canvasMapViewport" class="canvas-map-viewport" aria-hidden="true"></div>
+          </div>
+
+          <div class="canvas-controls" aria-label="Canvas view controls">
+            <button title="Zoom out" aria-label="Zoom out" data-tooltip="Zoom out" data-view-action="zoom-out">
+              <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12l14 0"></path>
+              </svg>
+            </button>
+            <span id="zoomLabel" class="zoom-label">7%</span>
+            <button title="Zoom in" aria-label="Zoom in" data-tooltip="Zoom in" data-view-action="zoom-in">
+              <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12l14 0"></path>
+                <path d="M12 5l0 14"></path>
+              </svg>
+            </button>
+            <button title="Show all objects" aria-label="Show all objects" data-tooltip="Show all" data-view-action="fit-all">
+              <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9V5a1 1 0 0 1 1 -1h4"></path>
+                <path d="M20 9V5a1 1 0 0 0 -1 -1h-4"></path>
+                <path d="M4 15v4a1 1 0 0 0 1 1h4"></path>
+                <path d="M20 15v4a1 1 0 0 1 -1 1h-4"></path>
+              </svg>
+            </button>
+            <button id="mapToggle" class="map-toggle active" title="Toggle canvas map" aria-label="Toggle canvas map" aria-pressed="true" data-tooltip="Toggle canvas map" data-view-action="toggle-map">
+              <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6l6 -3l6 3l6 -3v15l-6 3l-6 -3l-6 3z"></path>
+                <path d="M9 3v15"></path>
+                <path d="M15 6v15"></path>
+              </svg>
+            </button>
+          </div>
+
+          <nav class="tool-dock" aria-label="Canvas tools">
+            <button title="Hand" aria-label="Hand" data-tooltip="Hand" data-tool="hand">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v6.5"></path>
+                <path d="M11 5.5v-2a1.5 1.5 0 0 1 3 0v7.5"></path>
+                <path d="M14 5.5a1.5 1.5 0 0 1 3 0v5.5"></path>
+                <path d="M17 7.5a1.5 1.5 0 0 1 3 0v6.5a6 6 0 0 1 -6 6h-2c-2.4 0 -3.4 -.6 -4.8 -2l-3.6 -4.5a1.5 1.5 0 0 1 2.3 -1.9l2.1 1.4"></path>
+              </svg>
+            </button>
+            <button class="active" title="Select" aria-label="Select" data-tooltip="Select" data-tool="select">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7.904 17.563a1.2 1.2 0 0 0 2.228 .308l2.09 -3.093l4.907 4.907a1.067 1.067 0 0 0 1.509 0l1.047 -1.047a1.067 1.067 0 0 0 0 -1.509l-4.907 -4.907l3.113 -2.09a1.2 1.2 0 0 0 -.309 -2.228l-13.582 -3.904l3.904 13.563"></path>
+              </svg>
+            </button>
+            <button id="workflowImageButton" title="上传图片" aria-label="上传图片" data-tooltip="上传图片" data-view-action="upload">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 8h.01"></path>
+                <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5"></path>
+                <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5"></path>
+                <path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526"></path>
+                <path d="M19 22v-6"></path>
+                <path d="M22 19l-3 -3l-3 3"></path>
+              </svg>
+            </button>
+            <button title="添加幻灯片" aria-label="添加幻灯片" data-tooltip="添加幻灯片" data-view-action="add-slides"><svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 8h10M7 12h7M7 16h4"></path></svg></button>
+            <!-- Lucide message-square-plus; matches the Quick Edit Arrow Note tool. -->
+            <button title="Arrow note" aria-label="Arrow note" data-tooltip="Arrow note" data-tool="annotation">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h6"></path>
+                <path d="M19 3v6"></path>
+                <path d="M16 6h6"></path>
+              </svg>
+            </button>
+            <button title="Pencil" aria-label="Pencil" data-tooltip="Pencil" data-tool="pencil">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                <path d="M13.5 6.5l4 4"></path>
+              </svg>
+            </button>
+            <button title="Text" aria-label="Text" data-tooltip="Text" data-tool="text">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 4l12 0"></path>
+                <path d="M12 4l0 16"></path>
+              </svg>
+            </button>
+            <span class="dock-separator"></span>
+            <button title="Undo" aria-label="Undo" data-tooltip="Undo" data-history-action="undo" disabled>
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 14l-4 -4l4 -4"></path>
+                <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+              </svg>
+            </button>
+            <button title="Redo" aria-label="Redo" data-tooltip="Redo" data-history-action="redo" disabled>
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 14l4 -4l-4 -4"></path>
+                <path d="M19 10h-11a4 4 0 1 0 0 8h1"></path>
+              </svg>
+            </button>
+            <button title="Reset view" aria-label="Reset view" data-tooltip="Reset view" data-view-action="reset">
+              <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3.06 13a9 9 0 1 0 .49 -4.087"></path>
+                <path d="M3 4.001v5h5"></path>
+                <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+              </svg>
+            </button>
+          </nav>
+          <input id="imageUploadInput" type="file" accept="image/*" multiple hidden />
+          <input id="workflowImageInput" type="file" accept="image/*" multiple hidden />
+          <div id="colorPalette" class="color-palette" aria-label="Tool colors" hidden></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="/app.js?v=97" type="module"></script>
+    <script src="/workflow-studio.js" type="module"></script>
+  </body>
+</html>

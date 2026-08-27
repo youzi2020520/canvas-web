@@ -1,0 +1,21 @@
+{
+  "id": "process-flow",
+  "family": "flow",
+  "label": "流程图",
+  "purpose": "业务流程/工作流,横向或纵向步骤序列,展示从输入到输出的转化路径",
+  "layout": "horizontal-flow",
+  "slots": [
+    { "id": "step-1", "label": "步骤一 输入", "region": "left", "role": "step" },
+    { "id": "step-2", "label": "步骤二 处理", "region": "center-left", "role": "step" },
+    { "id": "step-3", "label": "步骤三 校验", "region": "center-right", "role": "step" },
+    { "id": "step-4", "label": "步骤四 输出", "region": "right", "role": "step" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": false,
+    "regionLabels": true,
+    "arrowheads": true,
+    "connectorStyle": "elbow"
+  },
+  "accessibilityPattern": "从最左输入开始,沿箭头方向自左向右阅读,以最右输出收尾;遇分支先主干后支线"
+}

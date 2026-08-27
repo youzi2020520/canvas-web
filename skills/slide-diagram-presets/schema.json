@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://canvas-codex.local/schemas/slide-diagram-preset.json",
+  "title": "Codex-Canvas Slide Diagram Preset",
+  "description": "Codex-Canvas 商业图解组件 preset。preset 是 deterministic 约束集,供 create-slide-diagram 在生成图解时绑定使用,而非让 AI 自由设计布局。preset 定义布局类型、槽位与视觉规范,AI 只负责填充槽位内容。",
+  "type": "object",
+  "required": ["id", "family", "label", "purpose", "layout", "slots", "visualSpec"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 80,
+      "description": "preset 唯一标识,kebab-case,与文件名同"
+    },
+    "family": {
+      "type": "string",
+      "enum": ["flow", "architecture", "timeline", "cycle", "hierarchy", "matrix", "causal-chain", "funnel"],
+      "description": "对应 create-slide-diagram 的 diagram family;preset 可引入原 family 列表外的新 family(如 funnel)"
+    },
+    "label": {
+      "type": "string",
+      "description": "preset 显示名,如 SWOT 分析"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "preset 用途说明,如 战略分析,四象限评估"
+    },
+    "layout": {
+      "type": "string",
+      "description": "布局类型标识,由 create-slide-diagram 解释,如 2x2-grid / vertical-funnel / layered-pyramid / 2col-comparison / tree-hierarchy / horizontal-timeline"
+    },
+    "slots": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$",
+            "description": "槽位唯一标识,kebab-case"
+          },
+          "label": {
+            "type": "string",
+            "description": "槽位标签,如 优势 Strengths / 阶段一"
+          },
+          "region": {
+            "type": "string",
+            "description": "槽位区域位置,如 top-left / stage-1 / layer-3 / left / root"
+          },
+          "role": {
+            "type": "string",
+            "description": "槽位角色,如 quadrant / stage / layer / column / node / milestone"
+          }
+        }
+      },
+      "description": "槽位数组。每个槽位必须被填充,不得跳过,不得新增顶层槽位"
+    },
+    "visualSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "strokeWidth": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "描边宽度 px,默认遵循 diagram-contract.md 的 1.5-2.5px"
+        },
+        "dividerLines": {
+          "type": "boolean",
+          "description": "是否绘制分割线"
+        },
+        "regionLabels": {
+          "type": "boolean",
+          "description": "是否显示区域标签"
+        },
+        "arrowheads": {
+          "type": "boolean",
+          "description": "连接器是否带箭头"
+        },
+        "connectorStyle": {
+          "type": "string",
+          "enum": ["straight", "elbow", "curved"],
+          "description": "连接器样式"
+        }
+      },
+      "description": "视觉规范。被绑定的 slide template 的 shape 字段更严时,以 template 为准"
+    },
+    "accessibilityPattern": {
+      "type": "string",
+      "description": "无障碍阅读顺序说明,必须反映在 diagram 的 accessibility summary 中"
+    }
+  }
+}

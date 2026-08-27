@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transform Slide Deck"
+  short_description: "Safely revise an existing deck without breaking its structure"
+  default_prompt: "Use $transform-slide-deck to revise this presentation while preserving its structure and confirmed facts."

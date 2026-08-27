@@ -1,0 +1,19 @@
+{
+  "id": "funnel-stages",
+  "family": "funnel",
+  "label": "漏斗分析",
+  "purpose": "转化漏斗,展示各阶段递减与转化率",
+  "layout": "vertical-funnel",
+  "slots": [
+    { "id": "stage-1", "label": "阶段一(顶层入口)", "region": "top", "role": "stage" },
+    { "id": "stage-2", "label": "阶段二", "region": "middle-upper", "role": "stage" },
+    { "id": "stage-3", "label": "阶段三", "region": "middle-lower", "role": "stage" },
+    { "id": "stage-4", "label": "阶段四(底层转化)", "region": "bottom", "role": "stage" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true
+  },
+  "accessibilityPattern": "从顶部宽端入口开始,逐层向下收窄,以最终转化率收尾"
+}

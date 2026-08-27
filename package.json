@@ -1,0 +1,93 @@
+{
+  "name": "canvas-codex",
+  "version": "0.38.0",
+  "description": "Node-based local canvas for Codex text-to-image and image-to-image workflows.",
+  "type": "module",
+  "homepage": "https://github.com/youzi2020520/canvas-codex",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/youzi2020520/canvas-codex.git"
+  },
+  "bin": {
+    "codex-canvas": "./bin/codex-canvas.mjs"
+  },
+  "files": [
+    ".codex-plugin/",
+    ".mcp.json",
+    "AGENTS.md",
+    "INSTALL.md",
+    "README.md",
+    "README.en.md",
+    "README.ja.md",
+    "SKILL.md",
+    "LICENSE",
+    "assets/icon.png",
+    "logo.svg",
+    "bin/",
+    "public/app.js",
+    "public/canvas-history.js",
+    "public/icon.png",
+    "public/index.html",
+    "public/styles.css",
+    "scripts/compose_annotations.py",
+    "scripts/checkout-stable-release.mjs",
+    "scripts/install-personal-plugin.mjs",
+    "scripts/watch-personal-plugin.mjs",
+    "scripts/prepare_completed_background.py",
+    "scripts/prepare_expand_canvas.py",
+    "scripts/remove_chroma_key_connected.py",
+    "scripts/split_elements.py",
+    "scripts/verify_elements_layers.py",
+    "skills/",
+    "src/",
+    "web-mcp/",
+    "deploy/",
+    "docs/",
+    ".env.web.example",
+    "双端部署说明.md"
+  ],
+  "scripts": {
+    "setup:ocr": "node ./bin/codex-canvas.mjs setup-ocr",
+    "setup:image-deps": "node ./bin/codex-canvas.mjs setup-image-deps",
+    "setup:deps": "node ./bin/codex-canvas.mjs setup-deps",
+    "checkout:stable": "node ./scripts/checkout-stable-release.mjs",
+    "install:personal": "node ./scripts/install-personal-plugin.mjs",
+    "dev:sync": "node ./scripts/watch-personal-plugin.mjs",
+    "doctor:ocr": "node ./bin/codex-canvas.mjs doctor-ocr --json",
+    "doctor:image-deps": "node ./bin/codex-canvas.mjs doctor-image-deps --json",
+    "doctor:deps": "node ./bin/codex-canvas.mjs doctor-deps --json",
+    "start": "node ./bin/codex-canvas.mjs start",
+    "validate": "node ./bin/codex-canvas.mjs status --json",
+    "smoke": "node ./scripts/smoke.mjs",
+    "smoke:visual": "node ./scripts/visual-smoke.mjs",
+    "visual:regression": "node ./scripts/visual-regression.mjs",
+    "verify:release": "node ./scripts/verify-release.mjs",
+    "verify:archive": "node ./scripts/verify-release-archive.mjs",
+    "build:release": "node ./scripts/build-release.mjs",
+    "test": "npm run smoke",
+    "start:web-canvas": "node ./src/web-canvas-server.mjs",
+    "start:web-mcp": "node ./web-mcp/server.mjs",
+    "start:web": "node ./src/web-stack.mjs",
+    "smoke:web-mcp": "node ./scripts/web-mcp-smoke.mjs"
+  },
+  "keywords": [
+    "codex",
+    "plugin",
+    "canvas",
+    "imagegen"
+  ],
+  "author": {
+    "name": "Codex-Canvas Contributors"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.18"
+  },
+  "dependencies": {
+    "ag-psd": "^31.0.0",
+    "cross-spawn": "^7.0.6",
+    "echarts": "^6.1.0",
+    "fflate": "^0.8.3",
+    "pngjs": "^7.0.0"
+  }
+}

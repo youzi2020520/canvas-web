@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slide Quality Reviewer"
+  short_description: "Review slide layout, crop, clarity, and accessibility"
+  default_prompt: "Use -slide-quality to audit and repair a presentation slide."

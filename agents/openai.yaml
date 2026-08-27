@@ -1,0 +1,9 @@
+interface:
+  display_name: "Canvas Codex"
+  short_description: "Build connected text-to-image and image-to-image workflows."
+  icon_small: "./logo.svg"
+  icon_large: "./logo.svg"
+  brand_color: "#14161B"
+  default_prompt: "Open Canvas Codex and build a connected image generation flow."
+policy:
+  allow_implicit_invocation: true

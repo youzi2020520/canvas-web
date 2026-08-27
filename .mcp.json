@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "canvas-codex": {
+      "command": "node",
+      "args": ["./src/mcp-server.mjs"],
+      "cwd": "."
+    }
+  }
+}

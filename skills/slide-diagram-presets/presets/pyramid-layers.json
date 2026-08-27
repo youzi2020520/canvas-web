@@ -1,0 +1,19 @@
+{
+  "id": "pyramid-layers",
+  "family": "hierarchy",
+  "label": "金字塔",
+  "purpose": "层级递进,从基础到顶端展示分层结构",
+  "layout": "layered-pyramid",
+  "slots": [
+    { "id": "layer-1", "label": "顶端(战略层)", "region": "top", "role": "layer" },
+    { "id": "layer-2", "label": "上层(战术层)", "region": "upper", "role": "layer" },
+    { "id": "layer-3", "label": "中层(执行层)", "region": "middle", "role": "layer" },
+    { "id": "layer-4", "label": "底层(基础层)", "region": "bottom", "role": "layer" }
+  ],
+  "visualSpec": {
+    "strokeWidth": 2,
+    "dividerLines": true,
+    "regionLabels": true
+  },
+  "accessibilityPattern": "从顶端战略层开始,逐层向下展开基础,以底层支撑收尾"
+}

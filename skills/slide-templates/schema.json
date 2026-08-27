@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://canvas-codex.local/schemas/slide-template.json",
+  "title": "Codex-Canvas Slide Template",
+  "description": "Codex-Canvas 可组合幻灯片模板。模板是 deterministic 约束集,供 compose-professional-slides 在规划 visual-system 时绑定使用,而非让 AI 自由发挥。模板字段必须是纯数据,不含 AI 决策逻辑。",
+  "type": "object",
+  "required": ["id", "purpose", "style", "expression", "palette", "typography", "shape", "pageRoleSlots", "chart", "image"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 80,
+      "description": "模板唯一标识,kebab-case,与文件名同"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "用途,如 年度总结 / 产品发布 / 毕业答辩"
+    },
+    "industry": {
+      "type": "string",
+      "default": "通用",
+      "description": "适用行业,通用表示不限行业"
+    },
+    "style": {
+      "type": "string",
+      "description": "风格,如 专业商务 / 未来科技 / 极简清新"
+    },
+    "expression": {
+      "type": "string",
+      "description": "表达模式,如图表型 / 全图大字型 / 图解型 / 数据驱动型"
+    },
+    "audience": {
+      "type": "string",
+      "default": "通用",
+      "description": "受众,如 管理层 / 评委 / 投资人 / 学员"
+    },
+    "scenario": {
+      "type": "string",
+      "default": "现场汇报",
+      "description": "演示场景,如 现场汇报 / 路演 / 教学 / 自行阅读"
+    },
+    "density": {
+      "type": "string",
+      "enum": ["sparse", "balanced", "dense"],
+      "default": "balanced",
+      "description": "信息密度:sparse 演讲少文字 / balanced 汇报均衡 / dense 阅读信息密集"
+    },
+    "palette": {
+      "type": "object",
+      "required": ["roles"],
+      "additionalProperties": false,
+      "properties": {
+        "roles": {
+          "type": "object",
+          "required": ["background", "surface", "primary", "accent", "textStrong", "textBody", "textMuted", "border"],
+          "additionalProperties": false,
+          "properties": {
+            "background": { "$ref": "#/$defs/color", "description": "页面背景" },
+            "surface": { "$ref": "#/$defs/color", "description": "卡片/容器底色" },
+            "primary": { "$ref": "#/$defs/color", "description": "主色,用于标题/重点元素" },
+            "accent": { "$ref": "#/$defs/color", "description": "强调色,用于高亮/链接/数据强调" },
+            "textStrong": { "$ref": "#/$defs/color", "description": "标题文字色" },
+            "textBody": { "$ref": "#/$defs/color", "description": "正文文字色" },
+            "textMuted": { "$ref": "#/$defs/color", "description": "辅助/来源标注色" },
+            "border": { "$ref": "#/$defs/color", "description": "描边/分割线色" }
+          }
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["roles"],
+      "additionalProperties": false,
+      "properties": {
+        "roles": {
+          "type": "object",
+          "required": ["title", "subtitle", "body", "data", "caption"],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "$ref": "#/$defs/typeRole", "description": "主标题角色" },
+            "subtitle": { "$ref": "#/$defs/typeRole", "description": "副标题/章节标题角色" },
+            "body": { "$ref": "#/$defs/typeRole", "description": "正文角色" },
+            "data": { "$ref": "#/$defs/typeRole", "description": "数字/数据角色,常用等宽字体" },
+            "caption": { "$ref": "#/$defs/typeRole", "description": "辅助/来源/标注角色" }
+          }
+        }
+      }
+    },
+    "shape": {
+      "type": "object",
+      "required": ["cornerRadius", "shadow", "borderWidth"],
+      "additionalProperties": false,
+      "properties": {
+        "cornerRadius": {
+          "type": "object",
+          "required": ["card", "button", "image", "chip"],
+          "additionalProperties": false,
+          "properties": {
+            "card": { "type": "integer", "minimum": 0, "maximum": 64, "description": "卡片圆角 px" },
+            "button": { "type": "integer", "minimum": 0, "maximum": 64 },
+            "image": { "type": "integer", "minimum": 0, "maximum": 64 },
+            "chip": { "type": "integer", "minimum": 0, "maximum": 999, "description": "chip 圆角,999 表示全圆" }
+          }
+        },
+        "shadow": {
+          "type": "string",
+          "description": "CSS box-shadow 字符串,空字符串表示无阴影"
+        },
+        "borderWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8,
+          "description": "默认描边宽度 px"
+        }
+      }
+    },
+    "pageRoleSlots": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["layout", "slots"],
+        "additionalProperties": false,
+        "properties": {
+          "layout": {
+            "type": "string",
+            "description": "该 page role 使用的 archetype,引用 slides-layout-engine 内置 archetype,如 cover-hero / content-split / data-chart"
+          },
+          "slots": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "该 page role 提供的内容槽位 ID 列表,如 headline / kpi / chart / source"
+          },
+          "density": {
+            "type": "string",
+            "enum": ["sparse", "balanced", "dense"],
+            "description": "该 page role 的局部密度覆盖,可选"
+          }
+        }
+      },
+      "description": "page role 到 layout+slots 的映射。key 是 page role 名(如 cover/agenda/section/content/data/closing),value 是该 role 的 layout 引用与槽位"
+    },
+    "chart": {
+      "type": "object",
+      "required": ["palette", "fontFamily", "gridColor", "axisColor"],
+      "additionalProperties": false,
+      "properties": {
+        "palette": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+          "minItems": 3,
+          "maxItems": 12,
+          "description": "图表系列色板,按顺序使用"
+        },
+        "fontFamily": {
+          "type": "string",
+          "description": "图表轴/标签字体"
+        },
+        "gridColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "axisColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }
+      }
+    },
+    "image": {
+      "type": "object",
+      "required": ["language", "treatment", "cropStyle"],
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "图片视觉语言,如 clean-photographic / futuristic-3d-render / minimal-flat / product-screenshot-clean / flat-illustration"
+        },
+        "treatment": {
+          "type": "string",
+          "description": "图片处理风格,如 subtle-overlay / no-overlay / duotone"
+        },
+        "cropStyle": {
+          "type": "string",
+          "description": "裁切风格,如 subject-focal / full-bleed / contain"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "object",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "usage": { "type": "string" }
+      }
+    },
+    "typeRole": {
+      "type": "object",
+      "required": ["fontFamily", "sizeRange", "weight", "lineHeight"],
+      "additionalProperties": false,
+      "properties": {
+        "fontFamily": {
+          "type": "string",
+          "description": "字体族栈,CJK 字体优先,以逗号分隔,如 '思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif'"
+        },
+        "sizeRange": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 8, "maximum": 200 },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[min, max] 字号 px"
+        },
+        "weight": {
+          "type": "integer",
+          "enum": [300, 400, 500, 600, 700, 800],
+          "description": "CSS font-weight 数值"
+        },
+        "lineHeight": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 2.0,
+          "description": "行高比"
+        }
+      }
+    }
+  }
+}

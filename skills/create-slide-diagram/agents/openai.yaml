@@ -1,0 +1,4 @@
+interface:
+  display_name: "Slide Diagram Designer"
+  short_description: "Create structured SVG diagrams for presentations"
+  default_prompt: "Use -slide-diagram to create a clear presentation diagram."

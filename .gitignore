@@ -1,0 +1,36 @@
+/canvas/
+assets/original/
+node_modules/
+.DS_Store
+npm-debug.log*
+*.traineddata
+
+# Local environment and logs
+.env
+.env.*
+*.log
+
+# Python local tooling/cache
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build and coverage outputs
+dist/
+build/
+coverage/
+
+# IDE local state
+.trae/
+.vscode/
+
+# Local diagnostic and scratch files
+gen-pptx-diag.mjs
+*.diag.mjs
+font-fallback-test.pptx
+hero-*.pptx
+
+# Web runtime data
+.web-data/
+!.env.web.example

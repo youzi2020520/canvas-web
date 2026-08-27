@@ -1,0 +1,80 @@
+{
+  "id": "product-launch-tech-hero",
+  "purpose": "产品发布",
+  "industry": "科技",
+  "style": "未来科技",
+  "expression": "全图大字型",
+  "audience": "通用",
+  "scenario": "现场发布",
+  "density": "sparse",
+  "palette": {
+    "roles": {
+      "background": { "value": "#020613", "usage": "深黑页面背景" },
+      "surface": { "value": "#0f172a", "usage": "卡片/容器底色" },
+      "primary": { "value": "#cdff4d", "usage": "霓虹绿主色,大标题/重点元素" },
+      "accent": { "value": "#60a5fa", "usage": "次强调,链接/数据强调" },
+      "textStrong": { "value": "#f8fafc", "usage": "标题/大字文字" },
+      "textBody": { "value": "#cbd5e1", "usage": "正文文字" },
+      "textMuted": { "value": "#64748b", "usage": "辅助/来源标注" },
+      "border": { "value": "#1e293b", "usage": "描边/分割线" }
+    }
+  },
+  "typography": {
+    "roles": {
+      "title": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [56, 96],
+        "weight": 800,
+        "lineHeight": 1.05
+      },
+      "subtitle": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [24, 36],
+        "weight": 500,
+        "lineHeight": 1.2
+      },
+      "body": {
+        "fontFamily": "思源黑体 SC, Source Han Sans SC, Microsoft YaHei, sans-serif",
+        "sizeRange": [18, 22],
+        "weight": 400,
+        "lineHeight": 1.5
+      },
+      "data": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [36, 64],
+        "weight": 700,
+        "lineHeight": 1.1
+      },
+      "caption": {
+        "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+        "sizeRange": [12, 14],
+        "weight": 400,
+        "lineHeight": 1.4
+      }
+    }
+  },
+  "shape": {
+    "cornerRadius": { "card": 0, "button": 0, "image": 0, "chip": 0 },
+    "shadow": "0 8px 32px rgba(205,255,77,0.15)",
+    "borderWidth": 1
+  },
+  "pageRoleSlots": {
+    "cover": { "layout": "cover-hero", "slots": ["eyebrow", "headline", "subhead", "footer"], "density": "sparse" },
+    "section": { "layout": "section-divider", "slots": ["index", "title", "lead"], "density": "sparse" },
+    "feature": { "layout": "feature-spotlight", "slots": ["title", "headline", "visual", "caption"], "density": "sparse" },
+    "content": { "layout": "content-split", "slots": ["title", "lead", "body", "visual"], "density": "sparse" },
+    "comparison": { "layout": "comparison-2col", "slots": ["title", "leftCard", "rightCard"] },
+    "closing": { "layout": "closing-summary", "slots": ["headline", "takeaways", "contact"], "density": "sparse" }
+  },
+  "chart": {
+    "palette": ["#cdff4d", "#60a5fa", "#f472b6", "#fbbf24", "#34d399", "#a78bfa"],
+    "fontFamily": "JetBrains Mono, Consolas, Courier New, monospace",
+    "gridColor": "#1e293b",
+    "axisColor": "#64748b"
+  },
+  "image": {
+    "language": "futuristic-3d-render",
+    "treatment": "no-overlay",
+    "cropStyle": "full-bleed"
+  }
+}
